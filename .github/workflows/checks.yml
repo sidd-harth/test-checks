@@ -31,7 +31,7 @@ jobs:
         route: POST /repos/sidd-harth/test-checks/check-suites
         # owner: ${{ github.repository_owner }}
         # repo: ${{ github.repository }}
-        # head_sha: ${{ github.sha }}
+        head_sha: ${{ github.sha }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
