@@ -10,7 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions: 
+        checks: write
     steps:
     #- uses: actions/checkout@v2
     # - uses: octokit/request-action@v2.x
