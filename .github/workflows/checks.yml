@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Create check suite
+      id: create-suite
+      uses: octokit/request-action@v2.x
+      with:
+        route: POST /repos/{owner}/{repo}/check-suites
+        owner: ${{ github.repository_owner }}
+        repo: ${{ github.repository }}
+        head_sha: ${{ github.sha }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Run unit tests
+      run: |
+        echo "Running unit tests..."
+        # Add commands to run your unit tests here
+        echo "Unit tests completed."
+
+    - name: Create check runs for each unit test
+      id: create-runs
+      uses: octokit/request-action@v2.x
+      with:
+        route: POST /repos/{owner}/{repo}/check-runs
+        owner: ${{ github.repository_owner }}
+        repo: ${{ github.repository }}
+        name: 'unit-test'  # replace with your actual unit test names
+        head_sha: ${{ github.sha }}
+        status: 'in_progress'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update check runs based on the result of the unit test
+      id: update-runs
+      uses: octokit/request-action@v2.x
+      with:
+        route: PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}
+        owner: ${{ github.repository_owner }}
+        repo: ${{ github.repository }}
+        check_run_id: ${{ steps.create-runs.outputs.data.id }}
+        status: 'completed'
+        conclusion: 'success'  # or 'failure' if the test failed
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update the check suite to completed
+      id: update-suite
+      uses: octokit/request-action@v2.x
+      with:
+        route: PATCH /repos/{owner}/{repo}/check-suites/{check_suite_id}
+        owner: ${{ github.repository_owner }}
+        repo: ${{ github.repository }}
+        check_suite_id: ${{ steps.create-suite.outputs.data.id }}
+        status: 'completed'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Deploy to production
+      run: |
+        echo "Deploying to production..."
+        # Add commands to deploy your code here
+        echo "Deployment completed."
