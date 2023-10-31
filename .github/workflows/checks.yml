@@ -62,7 +62,7 @@ jobs:
         route: PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}
         owner: ${{ github.repository_owner }}
         repo: ${{ github.event.repository.name }}
-        check_run_id: ${{ steps.create-runs.outputs.data.id }}
+        check_run_id: ${{ steps.create-runs.outputs.id }}
         status: 'completed'
         conclusion: 'success'  # or 'failure' if the test failed
       env:
@@ -75,7 +75,7 @@ jobs:
         route: PATCH /repos/{owner}/{repo}/check-suites/{check_suite_id}
         owner: ${{ github.repository_owner }}
         repo: ${{ github.event.repository.name }}
-        check_suite_id: ${{ steps.create-suite.outputs.data.id }}
+        check_suite_id: ${{ steps.create-suite.outputs.id }}
         status: 'completed'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
