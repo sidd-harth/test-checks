@@ -22,8 +22,8 @@ jobs:
         mediaType: application/vnd.github.v3+json
         requestBody: |
             {
-              "owner": ${{ github.repository_owner }}
-              "repo": ${{ github.repository }}
+              "owner": ${{ github.repository_owner }},
+              "repo": ${{ github.repository }},
               "head_sha": ${{ github.sha }}
             }
         
