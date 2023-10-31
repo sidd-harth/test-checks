@@ -1,0 +1,35 @@
+name: CI
+
+on: 
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Run unit tests
+      run: |
+        echo "Running unit tests..."
+        # Add commands to run your unit tests here
+        echo "Unit tests completed."
+        sleep 60s
+
+    - name: Run integration tests
+      run: |
+        echo "Running integration tests..."
+        # Add commands to run your integration tests here
+        echo "Integration tests completed."
+
+    - name: Deploy to production
+      run: |
+        echo "Deploying to production..."
+        # Add commands to deploy your code here
+        echo "Deployment completed."
+
