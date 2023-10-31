@@ -29,8 +29,8 @@ jobs:
       uses: octokit/request-action@v2.x
       with:
         route: POST /repos/sidd-harth/test-checks/check-suites
-        # owner: ${{ github.repository_owner }}
-        # repo: ${{ github.repository }}
+        owner: ${{ github.repository_owner }}
+        repo: ${{ github.event.repository.name }}
         head_sha: ${{ github.sha }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -47,7 +47,7 @@ jobs:
       with:
         route: POST /repos/{owner}/{repo}/check-runs
         owner: ${{ github.repository_owner }}
-        repo: ${{ github.repository }}
+        repo: ${{ github.event.repository.name }}
         name: 'unit-test'  # replace with your actual unit test names
         head_sha: ${{ github.sha }}
         status: 'in_progress'
@@ -60,7 +60,7 @@ jobs:
       with:
         route: PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}
         owner: ${{ github.repository_owner }}
-        repo: ${{ github.repository }}
+        repo: ${{ github.event.repository.name }}
         check_run_id: ${{ steps.create-runs.outputs.data.id }}
         status: 'completed'
         conclusion: 'success'  # or 'failure' if the test failed
@@ -73,7 +73,7 @@ jobs:
       with:
         route: PATCH /repos/{owner}/{repo}/check-suites/{check_suite_id}
         owner: ${{ github.repository_owner }}
-        repo: ${{ github.repository }}
+        repo: ${{ github.event.repository.name }}
         check_suite_id: ${{ steps.create-suite.outputs.data.id }}
         status: 'completed'
       env:
