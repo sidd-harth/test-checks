@@ -36,6 +36,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Run unit tests
+      id: unit-test22
       run: |
         echo "Running unit tests..."
         # Add commands to run your unit tests here
@@ -48,7 +49,7 @@ jobs:
         route: POST /repos/{owner}/{repo}/check-runs
         owner: ${{ github.repository_owner }}
         repo: ${{ github.event.repository.name }}
-        name: 'unit-test'  # replace with your actual unit test names
+        name: 'unit-test22'  # replace with your actual unit test names
         head_sha: ${{ github.sha }}
         status: 'in_progress'
       env:
