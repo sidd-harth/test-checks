@@ -1,4 +1,4 @@
-name: CI
+name: Checks
 
 on:
   push:
@@ -19,9 +19,14 @@ jobs:
       uses: octokit/request-action@v2.x
       with:
         route: POST /repos/{owner}/{repo}/check-suites
-        # owner: ${{ github.repository_owner }}
-        # repo: ${{ github.repository }}
-        # head_sha: ${{ github.sha }}
+        mediaType: application/vnd.github.v3+json
+        requestBody: |
+            {
+              "owner": ${{ github.repository_owner }}
+              "repo": ${{ github.repository }}
+              "head_sha": ${{ github.sha }}
+            }
+        
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
