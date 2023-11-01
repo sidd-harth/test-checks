@@ -1,8 +1,8 @@
 name: Check Run Triggered Workflow
 
 on:
-  check_run:
-    types: [created, completed]
+  check_suite: 
+    types: completed
 
 jobs:
   check-run-job:
